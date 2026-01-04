@@ -435,7 +435,7 @@ if (typeof window !== "undefined") {
 export default definePlugin({
     name: "CharacterCounterEnhanced",
     description: "Advanced character counter with statistics, typing speed, alerts, and customization",
-    authors: [EquicordDevs.creations, EquicordDevs.Panniku, Devs.thororen],
+    authors: [EquicordDevs.creations, EquicordDevs.Panniku, Devs.thororen, Devs.Mifu],
     settings,
 
     patches: [
