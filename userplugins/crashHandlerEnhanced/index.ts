@@ -489,7 +489,7 @@ function stopPerformanceMonitoring(): void {
 export default definePlugin({
     name: "CrashHandlerEnhanced",
     description: "Advanced crash handling with detailed logging, statistics, preventive measures, and intelligent recovery",
-    authors: [Devs.Nuckyz],
+    authors: [Devs.Nuckyz, Devs.Mifu],
     enabledByDefault: true,
 
     settings,
@@ -732,4 +732,5 @@ export default definePlugin({
             logCrash(errorState, true, false);
         }
     }
+
 });
