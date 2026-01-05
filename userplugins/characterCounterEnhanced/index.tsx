@@ -9,8 +9,7 @@ import "./style.css";
 import { definePluginSettings } from "@api/Settings";
 import { Devs, EquicordDevs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
-import { UserStore } from "@webpack/common";
-import { React } from "@webpack/common";
+import { UserStore, React } from "@webpack/common";
 
 // ==================== INTERFACES ====================
 interface TextStats {
@@ -186,24 +185,108 @@ const settings = definePluginSettings({
         default: false,
     },
     colorSafe: {
+        type: OptionType.COMPONENT,
+        description: "Color for safe range (0-50%)",
+        component: () => {
+            const { Forms, ColorPicker } = require("@webpack/common");
+            const [color, setColor] = React.useState(parseInt(settings.store.colorSafeValue || "b5bac1", 16));
+            
+            return (
+                <Forms.FormSection>
+                    <ColorPicker
+                        value={color}
+                        onChange={(newColor: number) => {
+                            setColor(newColor);
+                            settings.store.colorSafeValue = newColor.toString(16).padStart(6, '0');
+                        }}
+                    />
+                </Forms.FormSection>
+            );
+        }
+    },
+    colorSafeValue: {
         type: OptionType.STRING,
-        description: "Color for safe range (0-50%) - Hex code",
-        default: "#b5bac1",
+        description: "Safe color value (managed automatically)",
+        default: "b5bac1",
+        hidden: true
     },
     colorWarning: {
+        type: OptionType.COMPONENT,
+        description: "Color for warning range (50-75%)",
+        component: () => {
+            const { Forms, ColorPicker } = require("@webpack/common");
+            const [color, setColor] = React.useState(parseInt(settings.store.colorWarningValue || "faa81a", 16));
+            
+            return (
+                <Forms.FormSection>
+                    <ColorPicker
+                        value={color}
+                        onChange={(newColor: number) => {
+                            setColor(newColor);
+                            settings.store.colorWarningValue = newColor.toString(16).padStart(6, '0');
+                        }}
+                    />
+                </Forms.FormSection>
+            );
+        }
+    },
+    colorWarningValue: {
         type: OptionType.STRING,
-        description: "Color for warning range (50-75%) - Hex code",
-        default: "#faa81a",
+        description: "Warning color value (managed automatically)",
+        default: "faa81a",
+        hidden: true
     },
     colorCaution: {
+        type: OptionType.COMPONENT,
+        description: "Color for caution range (75-90%)",
+        component: () => {
+            const { Forms, ColorPicker } = require("@webpack/common");
+            const [color, setColor] = React.useState(parseInt(settings.store.colorCautionValue || "f26522", 16));
+            
+            return (
+                <Forms.FormSection>
+                    <ColorPicker
+                        value={color}
+                        onChange={(newColor: number) => {
+                            setColor(newColor);
+                            settings.store.colorCautionValue = newColor.toString(16).padStart(6, '0');
+                        }}
+                    />
+                </Forms.FormSection>
+            );
+        }
+    },
+    colorCautionValue: {
         type: OptionType.STRING,
-        description: "Color for caution range (75-90%) - Hex code",
-        default: "#f26522",
+        description: "Caution color value (managed automatically)",
+        default: "f26522",
+        hidden: true
     },
     colorDanger: {
+        type: OptionType.COMPONENT,
+        description: "Color for danger range (90-100%)",
+        component: () => {
+            const { Forms, ColorPicker } = require("@webpack/common");
+            const [color, setColor] = React.useState(parseInt(settings.store.colorDangerValue || "f23f43", 16));
+            
+            return (
+                <Forms.FormSection>
+                    <ColorPicker
+                        value={color}
+                        onChange={(newColor: number) => {
+                            setColor(newColor);
+                            settings.store.colorDangerValue = newColor.toString(16).padStart(6, '0');
+                        }}
+                    />
+                </Forms.FormSection>
+            );
+        }
+    },
+    colorDangerValue: {
         type: OptionType.STRING,
-        description: "Color for danger range (90-100%) - Hex code",
-        default: "#f23f43",
+        description: "Danger color value (managed automatically)",
+        default: "f23f43",
+        hidden: true
     },
 
     // ============ FORMATTING & DETECTION ============
@@ -363,10 +446,10 @@ function getColorForPercentage(percentage: number): string {
     if (!settings.store.colorEffects) return "var(--text-muted)";
 
     if (settings.store.customColors) {
-        if (percentage < 50) return settings.store.colorSafe;
-        if (percentage < 75) return settings.store.colorWarning;
-        if (percentage < 90) return settings.store.colorCaution;
-        return settings.store.colorDanger;
+        if (percentage < 50) return `#${settings.store.colorSafeValue}`;
+        if (percentage < 75) return `#${settings.store.colorWarningValue}`;
+        if (percentage < 90) return `#${settings.store.colorCautionValue}`;
+        return `#${settings.store.colorDangerValue}`;
     }
 
     // Default colors
